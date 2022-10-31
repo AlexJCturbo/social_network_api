@@ -9,13 +9,13 @@ const ReactionsSchema = new Schema(
     },
     reactionBody: {
       type: String,
-      required: true,
+      required: [true, 'Please introduce the text for your reaction.'],
       minLength: 1,
       maxLength: 280
     },
     username: {
       type: String,
-      required: true
+      required: [true, 'Please introduce your username.'],
     },
     createdAt: {
       type: Date,
@@ -35,7 +35,7 @@ const ThoughtsSchema = new Schema(
   {
     thoughsText: {
       type: String,
-      required: true,
+      required: [true, 'Please introduce your thought.'],
       minLength: 1,
       maxLength: 280
     },
@@ -46,7 +46,7 @@ const ThoughtsSchema = new Schema(
     },
     username: {
       type: String,
-      required: true
+      required: [true, 'Please introduce your username.'],
     },
     reactions: [ReactionsSchema]
   },

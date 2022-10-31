@@ -1,5 +1,5 @@
 //const { Users } = require('../models/Users');
-const { Users } = require('../models');
+const { Users, Thoughts } = require('../models');
 
 const usersController = {
   //Create a user /api/users
@@ -75,6 +75,33 @@ const usersController = {
       })
       .catch(err => res.status(400).json(err));
   },
+
+  //Need to fix this function to delete thoughts of a deleted user
+  // deleteUser({ params }, res) {
+  //   Users.findOneAndDelete({ _id: params.id })
+  //     .select('-__v')
+  //     .then(dbSocialNetwork => {
+  //       dbSocialNetwork.thoughts.forEach(thought => {
+  //         //Thoughts.findOneAndDelete({ _id: thought })
+  //         Thoughts.deleteMany({ _id: thought }, res)
+  //           .then(dbSocialNetwork => {
+  //             if (!dbSocialNetwork) {
+  //               res.status(404).json({ message: 'No though was found with this ID.' });
+  //               return;
+  //             }
+  //             res.json({ message: 'The user has been deleted' });
+  //           })
+  //           .catch(err => {
+  //             console.log(err);
+  //             res.status(400).json(err);
+  //           });
+  //       })
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //       res.status(400).json(err);
+  //     });
+  // },
 
   //Add a friend /api/users/:userId/friends/:friendId
   addFriend({ params }, res) {

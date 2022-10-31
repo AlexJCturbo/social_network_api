@@ -77,15 +77,25 @@ const thoughtsController = {
   //Delete a thought /api/thought/:id
   deleteThought({ params }, res) {
     Thoughts.findOneAndDelete({ _id: params.id })
-      .select('-__v')
+      // .select('-__v')
+      .then(({ username }) => {
+        return Users.findOneAndUpdate(
+          { username: username },
+          { $pull: { thoughts: params.id } },
+          { new: true }
+        )
+      })
       .then(dbSocialNetwork => {
         if (!dbSocialNetwork) {
-          res.status(404).json({ message: 'No thought found with this ID.' });
+          res.status(404).json({ message: 'No user found with this ID.' });
           return;
         }
-        res.json({ message: 'The thought has been deleted' });
+        res.json(dbSocialNetwork);
       })
-      .catch(err => res.status(400).json(err));
+      .catch(err => {
+        console.log(err);
+        res.status(400).json(err);
+      })
   },
 
   //Create a reaction /api/thoughts/:thoughtId/reactions
@@ -113,7 +123,7 @@ const thoughtsController = {
       { $pull: { reactions: { reactionId: params.reactionId } } },
       { new: true }
     )
-      .select('-__v')
+      //.select('-__v')
       .then(dbSocialNetwork => {
         if (!dbSocialNetwork) {
           res.status(404).json({ message: 'No thoughts found with this id.' });
