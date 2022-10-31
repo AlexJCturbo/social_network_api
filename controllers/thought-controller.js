@@ -88,6 +88,42 @@ const thoughtsController = {
       .catch(err => res.status(400).json(err));
   },
 
+  //Create a reaction /api/thoughts/:thoughtId/reactions
+  addReaction({ params, body }, res) {
+    Thoughts.findOneAndUpdate(
+      { _id: params.thoughtId },
+      { $push: { reactions: body } },
+      { new: true }
+    )
+      .select('-__v')
+      .then(dbSocialNetwork => {
+        if (!dbSocialNetwork) {
+          res.status(404).json({ message: 'No thought found with this ID.' })
+          return;
+        }
+        res.json(dbSocialNetwork);
+      })
+      .catch(err => res.json(err));
+  },
+
+  //Delete a reaction /api/thoughts/:thoughtId/reactions/:reactionId
+  deleteReaction({ params }, res) {
+    Thoughts.findOneAndUpdate(
+      { _id: params.thoughtId },
+      { $pull: { reactions: { reactionId: params.reactionId } } },
+      { new: true }
+    )
+      .select('-__v')
+      .then(dbSocialNetwork => {
+        if (!dbSocialNetwork) {
+          res.status(404).json({ message: 'No thoughts found with this id.' });
+          return;
+        }
+        res.json(dbSocialNetwork);
+      })
+      .catch(err => res.status(400).json(err));
+  }
+
 }
 
 module.exports = thoughtsController;

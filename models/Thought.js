@@ -13,13 +13,10 @@ const ReactionsSchema = new Schema(
       minLength: 1,
       maxLength: 280
     },
-    username: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Users',
-        required: true
-      }
-    ],
+    username: {
+      type: String,
+      required: true
+    },
     createdAt: {
       type: Date,
       default: Date.now,
@@ -27,6 +24,7 @@ const ReactionsSchema = new Schema(
     },
   }, {
   toJSON: {
+    virtuals: true,
     getters: true
   },
   id: false
