@@ -58,12 +58,12 @@ const thoughtsController = {
     Thoughts.findOneAndUpdate(
       { _id: params.id },
       body,
-      { new: true }
+      { new: true, runValidators: true }
     )
       .select('-__v')
       .then(dbSocialNetwork => {
         if (!dbSocialNetwork) {
-          res.status(404).json({ message: 'No user found with this ID.' });
+          res.status(404).json({ message: 'No thought found with this ID.' });
           return;
         }
         res.json(dbSocialNetwork);
@@ -72,7 +72,21 @@ const thoughtsController = {
         console.log(err);
         res.status(400).json(err);
       });
-  }
+  },
+
+  //Delete a thought /api/thought/:id
+  deleteThought({ params }, res) {
+    Thoughts.findOneAndDelete({ _id: params.id })
+      .select('-__v')
+      .then(dbSocialNetwork => {
+        if (!dbSocialNetwork) {
+          res.status(404).json({ message: 'No thought found with this ID.' });
+          return;
+        }
+        res.json({ message: 'The thought has been deleted' });
+      })
+      .catch(err => res.status(400).json(err));
+  },
 
 }
 

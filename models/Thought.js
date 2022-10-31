@@ -46,13 +46,10 @@ const ThoughtsSchema = new Schema(
       default: Date.now,
       get: createdAt => moment(createdAt).format('LLLL')
     },
-    username: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Users',
-        required: true
-      }
-    ],
+    username: {
+      type: String,
+      required: true
+    },
     reactions: [ReactionsSchema]
   },
   {
@@ -63,6 +60,7 @@ const ThoughtsSchema = new Schema(
     id: false
   }
 );
+
 
 ThoughtsSchema.virtual('reactionCount').get(function () {
   return this.reactions.length;
