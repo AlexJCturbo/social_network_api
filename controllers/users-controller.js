@@ -1,18 +1,18 @@
 //const { Users } = require('../models/Users');
 const { Users } = require('../models');
-const { put } = require('../routes/api/user-routes');
 
 const usersController = {
-  //Create User
+  //Create a user /api/users
   addUser({ body }, res) {
     Users.create(body)
       .then(dbSocialNetwork => res.json(dbSocialNetwork))
       .catch(err => res.status(400).json(err));
   },
 
-  //Get all users
+  //Get all users /api/users
   getAllUsers(req, res) {
     Users.find({})
+      .select('-__v')
       .then(dbSocialNetwork => res.json(dbSocialNetwork))
       .catch(err => {
         console.log(err);
@@ -20,9 +20,14 @@ const usersController = {
       });
   },
 
-  //Get one user by ID
+  //Get one user by ID /api/users/:id
   getUserById({ params }, res) {
     Users.findById({ _id: params.id })
+      .select('-__v')
+      .populate({
+        path: "thoughts friends",
+        select: '-__v -createdAt'
+      })
       .then(dbSocialNetwork => {
         if (!dbSocialNetwork) {
           res.status(404).json({ message: 'No user found with this ID.' });
@@ -36,12 +41,47 @@ const usersController = {
       });
   },
 
-  //Update a user
+  //Update a user /api/users/:id
   updateUser({ params, body }, res) {
     Users.findOneAndUpdate(
       { _id: params.id },
       body,
       { new: true }
+    )
+      .select('-__v')
+      .then(dbSocialNetwork => {
+        if (!dbSocialNetwork) {
+          res.status(404).json({ message: 'No user found with this ID.' });
+          return;
+        }
+        res.json(dbSocialNetwork);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(400).json(err);
+      });
+  },
+
+  //Delete a user /api/users/:id
+  deleteUser({ params }, res) {
+    Users.findOneAndDelete({ _id: params.id })
+      .select('-__v')
+      .then(dbSocialNetwork => {
+        if (!dbSocialNetwork) {
+          res.status(404).json({ message: 'No user found with this ID.' });
+          return;
+        }
+        res.json({ message: 'The user has been deleted' });
+      })
+      .catch(err => res.status(400).json(err));
+  },
+
+  //Add a friend /api/users/:userId/friends/:friendId
+  addFriend({ params }, res) {
+    Users.findOneAndUpdate(
+      { _id: params.userId },
+      { $push: { friends: params.friendId } },
+      { new: true, runValidators: true }
     )
       .then(dbSocialNetwork => {
         if (!dbSocialNetwork) {
@@ -56,17 +96,15 @@ const usersController = {
       });
   },
 
-  //Delete a user
-  deleteUser({ params }, res) {
-    Users.findOneAndDelete({ _id: params.id })
-      .then(dbSocialNetwork => {
-        if (!dbSocialNetwork) {
-          res.status(404).json({ message: 'No user found with this ID.' });
-          return;
-        }
-        res.json(dbSocialNetwork);
-      })
-      .catch(err => res.status(400).json(err));
+  //Delete a friend /api/users/:userId/friends/:friendId
+  deleteFriend({ params }, res) {
+    Users.findOneAndUpdate(
+      { _id: params.userId },
+      { $pull: { friends: params.friendId } },
+      { new: true }
+    )
+      .then(dbSocialNetwork => res.json(dbSocialNetwork))
+      .catch(err => res.json(err));
   }
 
 };
