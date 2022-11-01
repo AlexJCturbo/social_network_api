@@ -50,8 +50,18 @@ Finally, once the server is running, it is necessary to use Insomnia to execute 
 ###### [Back to Index](#Table-of-Contents)
 
 ## Screen Captures
-![Social Network 1](./assets/images/social_network_01.png)
-![Social Network 2](./assets/images/social_network_02.png)
+![Social Network 01 Add User](./assets/images/social_network_01_add_user.png)
+
+![Social Network 02 Get Users](./assets/images/social_network_02_get_users.png)
+
+![Social Network 03 Add Thought](./assets/images/social_network_03_add_thought.png)
+
+![Social Network 04 Add Reactions](./assets/images/social_network_04_add_reaction.png)
+
+![Social Network 05 Get Thoughts](./assets/images/social_network_05_get_thoughts.png)
+
+![Social Network 06 Delete Freiend](./assets/images/social_network_06_delete_friend.png)
+
 ###### [Back to Index](#Table-of-Contents)
 
 ## Technologies
