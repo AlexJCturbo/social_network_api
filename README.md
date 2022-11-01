@@ -81,7 +81,7 @@ Please, feel free to get in touch to discuss any inquiries or suggestions about 
 
 ## Links
 - [Application Repository](https://github.com/AlexJCturbo/social_network_api)
-- [Walkthrough Video]()
+- [Walkthrough Video](https://drive.google.com/file/d/117jEfP4YbrYNcRK78HeuVY2nS1l8YgOd/view?usp=sharing)
 ###### [Back to Index](#Table-of-Contents)
 
 
